@@ -6,25 +6,17 @@
 /*   By: sydauria <sydauria@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 15:58:51 by sydauria          #+#    #+#             */
-/*   Updated: 2022/04/09 07:23:18 by sydauria         ###   ########.fr       */
+/*   Updated: 2022/04/10 05:59:37 by sydauria         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
-
 #include <stdlib.h>
+#include <stdarg.h>
+#include "ft_printf.h"
+//#include "utils.c"
 
-size_t ft_strlen(char *str)
-{
-	size_t i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
-}
-
-char *ft_getchar(char c)
+static char *ft_getchar(char c)
 {
 	char	*formated;
 
@@ -34,25 +26,7 @@ char *ft_getchar(char c)
 	return (formated);
 }
 
-char *ft_strcpy(char *src)
-{
-	char	*dest;
-	size_t	i;
-
-	i = 0;
-	dest = malloc(sizeof(char) * (ft_strlen(src) + 1));
-	if (!dest)
-		return (NULL);
-	while (src[i])
-	{
-		dest[i] = src[i];
-		i++;
-	}
-	dest[i] = '\0';
-	return (dest);
-}
-
-char	*ft_itoa(int n)
+static char	*ft_itoa(int n)
 {
 	int				i;
 	int				sign;
@@ -81,7 +55,7 @@ char	*ft_itoa(int n)
 	return (num);
 }
 
-char	*ft_itoa_base(int n, char *base)
+static char	*ft_itoa_base(int n, char *base)
 {
 	int				i;
 	int				sign;
@@ -110,15 +84,86 @@ char	*ft_itoa_base(int n, char *base)
 	return (num);
 }
 
-char *ft_get_address(void *ptr)
+static char	*ft_itoa_u(size_t n)
+{
+	int		i;
+	size_t	save;
+	char	*num;
+
+	i = 1;
+	save = n;
+	while (save >= 10 && i++)
+		save = save / 10;
+	save = n;
+	num = malloc(sizeof(char) * (i + 1));
+	if (!num)
+		return (NULL);
+	num[i] = '\0';
+	while (i)
+	{
+		num[--i] = (save % 10 + '0');
+		save /= 10;
+	}
+	return (num);
+}
+
+static char	*ft_itoa_base_u(size_t n, char *base)
+{
+	int				i;
+	char			*num;
+	
+	i = 14;
+	num = malloc(sizeof(char) * 15);
+	if (!num)
+		return (NULL);
+	num[i] = '\0';
+	while (i)
+	{
+		num[--i] = base[(n % 16)];
+		n /= 16;
+	}
+	num[0] = '0';
+	num[1] = 'x';
+	return (num);
+}
+
+static char *ft_get_address(void *ptr)
 {
 	size_t	address;
 	char	*formated;
 
 	address = (size_t)ptr;
-	formated = ft_itoa_base(address, "0123456789abcdef");
+	formated = ft_itoa_base_u(address, "0123456789abcdef");
 	
 	return (formated); 
+}
+
+char *converter(const char *format, t_struct *data, va_list args)
+{
+	size_t	i;
+	char	*formated;
+	
+	i = data->form_offset + 1;
+	if (format[i] == 'c')
+		formated = ft_getchar(va_arg(args, int));
+	else if (format[i] == 's')
+		formated = ft_strdup(va_arg(args, char *));
+	else if (format[i] == 'd' || format[i] == 'i')
+		formated = ft_itoa(va_arg(args, int));
+	else if (format[i] == 'u')
+		formated = ft_itoa_u(va_arg(args, unsigned int));
+	else if (format[i] == 'x')
+		formated = ft_itoa_base(va_arg(args, int), "0123456789abcdef");
+	else if (format[i] == 'X')
+		formated = ft_itoa_base(va_arg(args, int), "0123456789ABCDEF");
+	else if (format[i] == 'p')
+		formated = ft_get_address(va_arg(args, void*));
+	else if (format[i] == '%')
+		formated = ft_getchar('%');
+	else
+		formated = (ft_strdup(""));
+	data->form_offset = (i + 1);
+	return (formated);
 }
 
 /*
@@ -142,9 +187,9 @@ static int how_many_number(int nbr)
 	return (p);
 }
 
-char *ft_itoa(int nbr)
+char *ft_itoa(size_t nbr)
 {
-	unsigned int save_nbr;
+	size_t		save_nbr;
 	char		*formated;
 	ssize_t		p;
 
@@ -166,5 +211,5 @@ char *ft_itoa(int nbr)
 		formated[0] = '-';
 	return (formated);
 }
-*/
 
+*/

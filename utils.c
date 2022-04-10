@@ -1,29 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.h                                        :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sydauria <sydauria@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/01 22:08:41 by sydauria          #+#    #+#             */
-/*   Updated: 2022/04/10 04:36:55 by sydauria         ###   ########.fr       */
+/*   Created: 2022/04/10 04:05:40 by sydauria          #+#    #+#             */
+/*   Updated: 2022/04/10 04:34:57 by sydauria         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_H
-# define FT_PRINTF_H
+#include <stdlib.h>
+//#include "ft_printf.h"
 
-# include <stdio.h>
-
-typedef struct s_struct
+static size_t ft_strlen(char *str)
 {
-	size_t	form_offset;
-	size_t	buff_offset;
-	size_t	wrote;
-}	t_struct;
+	size_t i;
 
-int		ft_printf(const char *format, ...);
-char	*ft_strdup(char *src);
-char	*converter(const char *format, t_struct *data, va_list args);
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
 
-#endif
+char *ft_strdup(char *src)
+{
+	char	*dest;
+	size_t	i;
+
+	i = 0;
+	dest = malloc(sizeof(char) * (ft_strlen(src) + 1));
+	if (!dest)
+		return (NULL);
+	while (src[i])
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
+}
+
