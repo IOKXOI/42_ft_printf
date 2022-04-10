@@ -6,7 +6,7 @@
 /*   By: sydauria <sydauria@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 22:08:41 by sydauria          #+#    #+#             */
-/*   Updated: 2022/04/10 04:36:55 by sydauria         ###   ########.fr       */
+/*   Updated: 2022/04/10 09:13:34 by sydauria         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ typedef struct s_struct
 
 int		ft_printf(const char *format, ...);
 char	*ft_strdup(char *src);
+char	*nill_case(void);
 char	*converter(const char *format, t_struct *data, va_list args);
 
 #endif

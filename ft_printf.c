@@ -6,12 +6,11 @@
 /*   By: sydauria <sydauria@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 02:25:05 by sydauria          #+#    #+#             */
-/*   Updated: 2022/04/10 07:58:55 by sydauria         ###   ########.fr       */
+/*   Updated: 2022/04/10 09:00:47 by sydauria         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include "converter.c"
 #include <stdarg.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -82,7 +81,7 @@ int		ft_printf(const char *format, ...)
 	t_struct	data;
 
 	if (!format)
-		return (0);
+		return (1);
 	struct_init(&data);
 	va_start(args, format);
 	while (browse(format, buffer, &data))
@@ -101,15 +100,16 @@ int		ft_printf(const char *format, ...)
 int main()
 {
 //	char * formated;
-	int nb = 100;
-	unsigned u_nb = nb;
+//	int nb = 100;
+//	unsigned u_nb = nb;
 	int my_return;
-	int el_return; 
+//	int el_return; 
 	
-	my_return = ft_printf("%u %p", u_nb, &u_nb);
-	el_return = printf("%u %p", u_nb, &u_nb);
+	my_return = ft_printf(" NULL %s NULL ", NULL);
+	//el_return = printf(" NULL %s NULL ", NULL);
 	printf("\nmy_return = %d",my_return);
-	printf("\nel_return = %d",el_return);
+//	printf("\nel_return = %d",el_return);
+
 //	ft_printf("bonjour le %u", nb);
 	//printf("\n%%%%\n");
 	//formated = ft_itoa_base(42, "0123456789ABCDEF");

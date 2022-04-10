@@ -6,7 +6,7 @@
 /*   By: sydauria <sydauria@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 15:58:51 by sydauria          #+#    #+#             */
-/*   Updated: 2022/04/10 05:59:37 by sydauria         ###   ########.fr       */
+/*   Updated: 2022/04/10 10:22:07 by sydauria         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,18 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include "ft_printf.h"
-//#include "utils.c"
 
-static char *ft_getchar(char c)
+static char *ft_getchar(char c, t_struct *data)
 {
 	char	*formated;
 
+	if (c == 0)
+	{
+		formated = malloc(2);
+		formated[0] = '\0';
+		data->wrote = data->wrote+1;
+		return (formated);
+	}
 	formated = malloc(2);
 	formated[0] = c;
 	formated[1] = '\0';
@@ -58,18 +64,14 @@ static char	*ft_itoa(int n)
 static char	*ft_itoa_base(int n, char *base)
 {
 	int				i;
-	int				sign;
 	unsigned int	save;
 	char			*num;
 	
 	i = 1;
-	sign = 1;
-	if (n < 0 && i++)
-		sign = -1;
-	save = n * sign;
+	save = n;
 	while (save >= 10 && i++)
 		save = save / 10;
-	save = n * sign;
+	save = n;
 	num = malloc(sizeof(char) * (i + 1));
 	if (!num)
 		return (NULL);
@@ -79,8 +81,6 @@ static char	*ft_itoa_base(int n, char *base)
 		num[--i] = base[(save % 16)];
 		save /= 16;
 	}
-	if (n < 0)
-		num[0] = '-';
 	return (num);
 }
 
@@ -113,6 +113,9 @@ static char	*ft_itoa_base_u(size_t n, char *base)
 	char			*num;
 	
 	i = 14;
+	
+	if (!n)
+		return (ft_strdup("(nil)"));
 	num = malloc(sizeof(char) * 15);
 	if (!num)
 		return (NULL);
@@ -122,8 +125,8 @@ static char	*ft_itoa_base_u(size_t n, char *base)
 		num[--i] = base[(n % 16)];
 		n /= 16;
 	}
-	num[0] = '0';
-	num[1] = 'x';
+	//num[0] = '0';
+	//num[1] = 'x';
 	return (num);
 }
 
@@ -145,7 +148,7 @@ char *converter(const char *format, t_struct *data, va_list args)
 	
 	i = data->form_offset + 1;
 	if (format[i] == 'c')
-		formated = ft_getchar(va_arg(args, int));
+		formated = ft_getchar(va_arg(args, int), data);
 	else if (format[i] == 's')
 		formated = ft_strdup(va_arg(args, char *));
 	else if (format[i] == 'd' || format[i] == 'i')
@@ -159,7 +162,7 @@ char *converter(const char *format, t_struct *data, va_list args)
 	else if (format[i] == 'p')
 		formated = ft_get_address(va_arg(args, void*));
 	else if (format[i] == '%')
-		formated = ft_getchar('%');
+		formated = ft_getchar('%', data);
 	else
 		formated = (ft_strdup(""));
 	data->form_offset = (i + 1);
