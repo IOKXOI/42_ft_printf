@@ -6,7 +6,7 @@
 /*   By: sydauria <sydauria@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 02:25:05 by sydauria          #+#    #+#             */
-/*   Updated: 2022/04/10 09:00:47 by sydauria         ###   ########.fr       */
+/*   Updated: 2022/05/07 22:57:34 by sydauria         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 static void struct_init(t_struct *my_struct)
 {
+	my_struct->null_char = 0;
 	my_struct->buff_offset = 0;
 	my_struct->form_offset = 0;
 	my_struct->wrote = 0;
@@ -29,7 +30,6 @@ static int browse(const char *format, char *buffer, t_struct *data)
 
 	i = data->form_offset;
 	j = data->buff_offset;
-
 	while(format[i] && format[i] != '%')
 	{
 		buffer[j++] = format[i++];
@@ -73,6 +73,27 @@ static void formated_to_buffer(char *str_formated, char *buffer, t_struct *data)
 	return;
 }
 
+static void null_to_buffer(char *str_formated, char *buffer, t_struct *data)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	j = data->buff_offset;
+	
+	buffer[j] = str_formated[i];
+	j++;
+	i++;
+	if (j == 1023)
+	{
+		data->wrote += write(1, buffer, 1024);
+		j = 0;
+	}
+	data->buff_offset = j;
+	data->null_char = 0;
+	return;
+}
+
 int		ft_printf(const char *format, ...)
 {
 	char		*str_formated;
@@ -89,6 +110,8 @@ int		ft_printf(const char *format, ...)
 		str_formated = converter(format, &data, args);
 		if(!str_formated)
 			return (-1);
+		if (data.null_char == 1)
+			null_to_buffer(str_formated, buffer, &data);
 		formated_to_buffer(str_formated, buffer, &data);
 		free(str_formated);
 	}
@@ -96,24 +119,26 @@ int		ft_printf(const char *format, ...)
 	va_end(args);
 	return (data.wrote);
 }
-/*
+
 int main()
 {
-//	char * formated;
-//	int nb = 100;
-//	unsigned u_nb = nb;
-	int my_return;
-//	int el_return; 
-	
-	my_return = ft_printf(" NULL %s NULL ", NULL);
-	//el_return = printf(" NULL %s NULL ", NULL);
-	printf("\nmy_return = %d",my_return);
-//	printf("\nel_return = %d",el_return);
+	 int monret;
+	 //int vrairet;
+	printf("\n moi : \n");
+	monret = ft_printf(" %p ", 16);
+	printf("\n");
+	printf(" lui : ");
+	//vrairet = printf(" %p ", 16);
+	printf("\n");
+	printf("\n");
+    printf(" %d ", monret);
+	printf("\n");
+	//printf(" %d ", vrairet);
 
-//	ft_printf("bonjour le %u", nb);
-	//printf("\n%%%%\n");
-	//formated = ft_itoa_base(42, "0123456789ABCDEF");
-//	printf("%s", formated);
+
+
 	return (0);
 }
-*/
+
+
+

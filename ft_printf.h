@@ -6,7 +6,7 @@
 /*   By: sydauria <sydauria@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 22:08:41 by sydauria          #+#    #+#             */
-/*   Updated: 2022/04/10 09:13:34 by sydauria         ###   ########.fr       */
+/*   Updated: 2022/05/07 22:42:11 by sydauria         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 typedef struct s_struct
 {
+	int		null_char;
 	size_t	form_offset;
 	size_t	buff_offset;
 	size_t	wrote;

@@ -6,7 +6,7 @@
 /*   By: sydauria <sydauria@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 15:58:51 by sydauria          #+#    #+#             */
-/*   Updated: 2022/04/10 10:22:07 by sydauria         ###   ########.fr       */
+/*   Updated: 2022/05/07 22:44:56 by sydauria         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,8 @@ static char *ft_getchar(char c, t_struct *data)
 {
 	char	*formated;
 
-	if (c == 0)
-	{
-		formated = malloc(2);
-		formated[0] = '\0';
-		data->wrote = data->wrote+1;
-		return (formated);
-	}
+	if (!c)
+		data->null_char = 1;
 	formated = malloc(2);
 	formated[0] = c;
 	formated[1] = '\0';
@@ -69,10 +64,10 @@ static char	*ft_itoa_base(int n, char *base)
 	
 	i = 1;
 	save = n;
-	while (save >= 10 && i++)
-		save = save / 10;
+	while (save >= 16 && i++)
+		save = save / 16;
 	save = n;
-	num = malloc(sizeof(char) * (i + 1));
+	num = malloc(sizeof(char) * (i + 3));
 	if (!num)
 		return (NULL);
 	num[i] = '\0';
@@ -106,27 +101,58 @@ static char	*ft_itoa_u(size_t n)
 	}
 	return (num);
 }
+/*
+char *check_ptr(char *num)
+{
+	size_t	i;
+	size_t	j;
+	char	*temp;
+
+	i = 0;
+	while (num[i] == '0')
+		i++;
+	if (i == 3)
+	{
+		temp = malloc(sizeof(char) * 13);
+		i = 2;
+		j = 4;
+		while (i < 13)
+		{
+			temp[i] = num[j];
+			i++;
+			j++;
+		}
+		free(num);
+		return (temp);
+	}
+	return (num);
+}*/
 
 static char	*ft_itoa_base_u(size_t n, char *base)
 {
 	int				i;
+	size_t			save;
 	char			*num;
 	
-	i = 14;
-	
+	i = 1;
+	save = n;
 	if (!n)
 		return (ft_strdup("(nil)"));
-	num = malloc(sizeof(char) * 15);
+	if (save < 16)
+		i += 2;
+	while (save >= 16 && i++)
+		save = save / 16;
+	num = malloc(sizeof(char) * (i + 1));
 	if (!num)
 		return (NULL);
 	num[i] = '\0';
-	while (i)
+	while (i > 1)
 	{
 		num[--i] = base[(n % 16)];
 		n /= 16;
 	}
-	//num[0] = '0';
-	//num[1] = 'x';
+	num[0] = '0';
+	num[1] = 'x';
 	return (num);
 }
 
