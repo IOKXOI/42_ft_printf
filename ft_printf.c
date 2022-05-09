@@ -6,7 +6,7 @@
 /*   By: sydauria <sydauria@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 02:25:05 by sydauria          #+#    #+#             */
-/*   Updated: 2022/05/07 22:57:34 by sydauria         ###   ########.fr       */
+/*   Updated: 2022/05/09 04:17:38 by sydauria         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <limits.h>
 
 static void struct_init(t_struct *my_struct)
 {
@@ -119,26 +120,30 @@ int		ft_printf(const char *format, ...)
 	va_end(args);
 	return (data.wrote);
 }
-
+/*
 int main()
 {
 	 int monret;
-	 //int vrairet;
+	 int vrairet;
+
+	monret = 0;
+	vrairet = 0;
 	printf("\n moi : \n");
-	monret = ft_printf(" %p ", 16);
+	monret = ft_printf(" %p ", 1);
 	printf("\n");
-	printf(" lui : ");
-	//vrairet = printf(" %p ", 16);
+	printf(" lui : \n");
+	vrairet = printf(" %p ", 1);
 	printf("\n");
 	printf("\n");
     printf(" %d ", monret);
 	printf("\n");
-	//printf(" %d ", vrairet);
+	printf(" %d ", vrairet);
 
 
 
 	return (0);
-}
+}*/
+
 
 
 

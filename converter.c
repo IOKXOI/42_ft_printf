@@ -6,7 +6,7 @@
 /*   By: sydauria <sydauria@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 15:58:51 by sydauria          #+#    #+#             */
-/*   Updated: 2022/05/07 22:44:56 by sydauria         ###   ########.fr       */
+/*   Updated: 2022/05/09 04:16:34 by sydauria         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ static char	*ft_itoa_base_u(size_t n, char *base)
 	save = n;
 	if (!n)
 		return (ft_strdup("(nil)"));
-	if (save < 16)
+//	if (save < 16)
 		i += 2;
 	while (save >= 16 && i++)
 		save = save / 16;
