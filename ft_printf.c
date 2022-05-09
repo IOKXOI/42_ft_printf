@@ -6,17 +6,14 @@
 /*   By: sydauria <sydauria@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 02:25:05 by sydauria          #+#    #+#             */
-/*   Updated: 2022/05/09 04:17:38 by sydauria         ###   ########.fr       */
+/*   Updated: 2022/05/09 05:59:54 by sydauria         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include <stdarg.h>
-#include <stdlib.h>
 #include <unistd.h>
-#include <limits.h>
 
-static void struct_init(t_struct *my_struct)
+static void	struct_init(t_struct *my_struct)
 {
 	my_struct->null_char = 0;
 	my_struct->buff_offset = 0;
@@ -24,14 +21,14 @@ static void struct_init(t_struct *my_struct)
 	my_struct->wrote = 0;
 }
 
-static int browse(const char *format, char *buffer, t_struct *data)
+static int	browse(const char *format, char *buffer, t_struct *data)
 {
 	size_t	i;
 	size_t	j;
 
 	i = data->form_offset;
 	j = data->buff_offset;
-	while(format[i] && format[i] != '%')
+	while (format[i] && format[i] != '%')
 	{
 		buffer[j++] = format[i++];
 		if (!format[i] || buffer[j - 1] == '\n' || j == 1025)
@@ -52,7 +49,7 @@ static int browse(const char *format, char *buffer, t_struct *data)
 	return (1);
 }
 
-static void formated_to_buffer(char *str_formated, char *buffer, t_struct *data)
+static void	formated_to_buffer(char *str_formated, char *buffer, t_struct *data)
 {
 	size_t	i;
 	size_t	j;
@@ -71,17 +68,16 @@ static void formated_to_buffer(char *str_formated, char *buffer, t_struct *data)
 		}
 	}
 	data->buff_offset = j;
-	return;
+	return ;
 }
 
-static void null_to_buffer(char *str_formated, char *buffer, t_struct *data)
+static void	null_to_buffer(char *str_formated, char *buffer, t_struct *data)
 {
 	size_t	i;
 	size_t	j;
 
 	i = 0;
 	j = data->buff_offset;
-	
 	buffer[j] = str_formated[i];
 	j++;
 	i++;
@@ -92,14 +88,14 @@ static void null_to_buffer(char *str_formated, char *buffer, t_struct *data)
 	}
 	data->buff_offset = j;
 	data->null_char = 0;
-	return;
+	return ;
 }
 
-int		ft_printf(const char *format, ...)
+int	ft_printf(const char *format, ...)
 {
 	char		*str_formated;
 	char		buffer[1025];
-	va_list 	args;
+	va_list		args;
 	t_struct	data;
 
 	if (!format)
@@ -109,41 +105,13 @@ int		ft_printf(const char *format, ...)
 	while (browse(format, buffer, &data))
 	{
 		str_formated = converter(format, &data, args);
-		if(!str_formated)
+		if (!str_formated)
 			return (-1);
 		if (data.null_char == 1)
 			null_to_buffer(str_formated, buffer, &data);
 		formated_to_buffer(str_formated, buffer, &data);
 		free(str_formated);
 	}
-//	data.wrote = write(1, buffer, data.buff_offset);
 	va_end(args);
 	return (data.wrote);
 }
-/*
-int main()
-{
-	 int monret;
-	 int vrairet;
-
-	monret = 0;
-	vrairet = 0;
-	printf("\n moi : \n");
-	monret = ft_printf(" %p ", 1);
-	printf("\n");
-	printf(" lui : \n");
-	vrairet = printf(" %p ", 1);
-	printf("\n");
-	printf("\n");
-    printf(" %d ", monret);
-	printf("\n");
-	printf(" %d ", vrairet);
-
-
-
-	return (0);
-}*/
-
-
-
-

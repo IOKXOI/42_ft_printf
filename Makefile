@@ -6,7 +6,7 @@
 #    By: sydauria <sydauria@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/10 07:14:57 by sydauria          #+#    #+#              #
-#    Updated: 2022/04/13 17:46:48 by sydauria         ###   ########.fr        #
+#    Updated: 2022/05/09 05:08:59 by sydauria         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ CC= gcc
 CFLAGS= -Wall -Wextra -Werror
 
 
-SRC = ft_printf.c converter.c utils.c
+SRC = ft_printf.c converter.c converter_itoas.c utils.c
 
 OBJ= $(SRC:.c=.o)
 
