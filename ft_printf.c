@@ -6,7 +6,7 @@
 /*   By: sydauria <sydauria@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 02:25:05 by sydauria          #+#    #+#             */
-/*   Updated: 2022/05/09 05:59:54 by sydauria         ###   ########.fr       */
+/*   Updated: 2022/05/14 02:33:34 by sydauria         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ static int	browse(const char *format, char *buffer, t_struct *data)
 	}
 	data->buff_offset = j;
 	data->form_offset = i;
-	if (!format[i])
+	if (!format[i] || !format[i + 1])
 	{
-		data->wrote = write(1, buffer, j);
+		data->wrote += write(1, buffer, j);
 		return (0);
 	}
 	return (1);
@@ -113,5 +113,8 @@ int	ft_printf(const char *format, ...)
 		free(str_formated);
 	}
 	va_end(args);
-	return (data.wrote);
+	if (data.wrote > 0)
+		return (data.wrote);
+	return (-1);
 }
+	
