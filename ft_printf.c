@@ -6,7 +6,7 @@
 /*   By: sydauria <sydauria@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 02:25:05 by sydauria          #+#    #+#             */
-/*   Updated: 2022/05/14 02:33:34 by sydauria         ###   ########.fr       */
+/*   Updated: 2022/06/05 19:57:08 by sydauria         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,13 +95,15 @@ int	ft_printf(const char *format, ...)
 {
 	char		*str_formated;
 	char		buffer[1025];
-	va_list		args;
+	va_list		args;	
 	t_struct	data;
 
 	if (!format)
-		return (1);
+		return (-1);
 	struct_init(&data);
 	va_start(args, format);
+	if (!check_format(format))
+		return (-1);
 	while (browse(format, buffer, &data))
 	{
 		str_formated = converter(format, &data, args);
@@ -113,8 +115,5 @@ int	ft_printf(const char *format, ...)
 		free(str_formated);
 	}
 	va_end(args);
-	if (data.wrote > 0)
-		return (data.wrote);
-	return (-1);
+	return (data.wrote);
 }
-	

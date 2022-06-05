@@ -6,7 +6,7 @@
 /*   By: sydauria <sydauria@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 15:58:51 by sydauria          #+#    #+#             */
-/*   Updated: 2022/05/14 02:17:50 by sydauria         ###   ########.fr       */
+/*   Updated: 2022/05/22 16:41:03 by sydauria         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char	*converter(const char *format, t_struct *data, va_list args)
 	else if (format[i] == '%')
 		formated = ft_getchar('%', data);
 	else
-		formated = (ft_strdup(""));
+		formated = (ft_strndup((const char *)&format[i - 1], 2));
 	data->form_offset = (i + 1);
 	return (formated);
 }
