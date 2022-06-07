@@ -6,7 +6,7 @@
 /*   By: sydauria <sydauria@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 02:25:05 by sydauria          #+#    #+#             */
-/*   Updated: 2022/06/05 19:57:08 by sydauria         ###   ########.fr       */
+/*   Updated: 2022/06/07 17:44:15 by sydauria         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static void	formated_to_buffer(char *str_formated, char *buffer, t_struct *data)
 		buffer[j] = str_formated[i];
 		j++;
 		i++;
-		if (j == 1023)
+		if (j == 1024)
 		{
 			data->wrote += write(1, buffer, 1024);
 			j = 0;
@@ -81,7 +81,7 @@ static void	null_to_buffer(char *str_formated, char *buffer, t_struct *data)
 	buffer[j] = str_formated[i];
 	j++;
 	i++;
-	if (j == 1023)
+	if (j == 1024)
 	{
 		data->wrote += write(1, buffer, 1024);
 		j = 0;
@@ -95,7 +95,7 @@ int	ft_printf(const char *format, ...)
 {
 	char		*str_formated;
 	char		buffer[1025];
-	va_list		args;	
+	va_list		args;
 	t_struct	data;
 
 	if (!format)
